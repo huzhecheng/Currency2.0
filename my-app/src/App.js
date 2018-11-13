@@ -1,11 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import ReactJson from 'react-json-view'
 import { Tabs, Button, Switch, Icon, InputNumber } from 'antd';
 import CusTable from "./components/CusTable";
 import { fetchCurrency, submitValue } from './actions/currencyAction'
 import './App.scss';
 
 const { TabPane } = Tabs;
+
+let expectTree = {
+  'USD': {
+    "買進": 29,
+    "賣出": 31
+  },
+  'AUD': {
+    "買進": 21,
+    "賣出": 23
+  },
+  'JPY': {
+    "買進": 0.25,
+    "賣出": 0.28
+  },
+  'ZAR': {
+    "買進": 2.0,
+    "賣出": 2.3
+  },
+  'CNY': {
+    "買進": 4.3,
+    "賣出": 4.7
+  },
+}
 
 class App extends Component {
   state = {
@@ -46,6 +70,14 @@ class App extends Component {
           </div>
           <div className="block">
             <h4><Icon type="euro" theme="twoTone" twoToneColor="#d48806" />&nbsp;&nbsp;設定期望值</h4>
+            <p>
+              <small>Ex : 期望銀行美元兌台幣 1：29 買進</small>
+              <br />
+              <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期望銀行美元兌台幣 1：31 賣出</small>
+            </p>
+            <ReactJson src={expectTree} name={false}
+              displayDataTypes={false} displayObjectSize={false}
+              onEdit={true} collapsed={1} />
           </div>
         </header>
         <section className="section">
