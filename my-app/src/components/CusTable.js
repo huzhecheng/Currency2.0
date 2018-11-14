@@ -73,9 +73,9 @@ class CusTable extends Component {
         loading={loading}
         rowKey={x => x.country}
         pagination={false}>
-        <Column title="幣別" dataIndex="country"
-          key="country" fixed="left" align="center" width={100}
-          render={(value, prop) => (<img src={"/images/" + value + ".png"} alt={prop.country} />)} />
+        <Column title="幣別" dataIndex="icon"
+          key="icon" fixed="left" align="center" width={100}
+          render={(value, prop) => (<img src={value} alt={prop.country} />)} />
         <ColumnGroup title="現金匯率">
           <Column title="銀行買入" dataIndex="cashbuy"
             key="cashbuy" width={150} align="center"
