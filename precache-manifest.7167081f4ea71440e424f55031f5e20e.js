@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/Currency2.0/static/js/runtime~main.647b3f70.js"
   },
   {
-    "revision": "fa71829dbc9d2baae87e",
-    "url": "/Currency2.0/static/js/main.fa71829d.chunk.js"
+    "revision": "6e81ebcd99b375f4b114",
+    "url": "/Currency2.0/static/js/main.6e81ebcd.chunk.js"
   },
   {
     "revision": "a123f2bffdb2d967be1f",
     "url": "/Currency2.0/static/js/1.a123f2bf.chunk.js"
   },
   {
-    "revision": "fa71829dbc9d2baae87e",
+    "revision": "6e81ebcd99b375f4b114",
     "url": "/Currency2.0/static/css/main.2caafded.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/Currency2.0/static/css/1.6b8b0b7b.chunk.css"
   },
   {
-    "revision": "398c9bfe9791ff5c9aa028fea0507200",
+    "revision": "d17fc832ea8806121027d1f0e5a7ff31",
     "url": "/Currency2.0/index.html"
   }
 ];
