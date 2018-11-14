@@ -6,29 +6,6 @@ import '../styles/CusTable.scss';
 
 const { Column, ColumnGroup } = Table;
 
-let expectTree = {
-  'USD': {
-    "買進": 29,
-    "賣出": 31
-  },
-  'AUD': {
-    "買進": 21,
-    "賣出": 23
-  },
-  'JPY': {
-    "買進": 0.25,
-    "賣出": 0.28
-  },
-  'ZAR': {
-    "買進": 2.0,
-    "賣出": 2.3
-  },
-  'CNY': {
-    "買進": 4.3,
-    "賣出": 4.7
-  },
-}
-
 const CaretUp = ({ value, differ }) => {
   return (
     <div>
@@ -53,50 +30,67 @@ const CaretDown = ({ value, differ }) => {
   );
 };
 
-const renderBuyColumn = (value, prop) => {
-  if (expectTree[prop.country] === undefined || value === 0) {
+const renderBuyColumn = (recentArray, value, prop, defaultday) => {
+  if (!recentArray.length || value === 0) {
     return <span>{value}</span>;
   }
-  let differ = (value - expectTree[prop.country]["賣出"]).toFixed(4);
+  let obj = recentArray.find(x => x.key === prop.country);
+  let differ = (value - obj[defaultday]["買入"]).toFixed(4);
   return differ > 0 ? (<CaretUp value={value} differ={Math.abs(differ)} />) : (<CaretDown value={value} differ={Math.abs(differ)} />);
 }
 
-const renderSellColumn = (value, prop) => {
-  if (expectTree[prop.country] === undefined || value === 0) {
+const renderSellColumn = (recentArray, value, prop, defaultday) => {
+  if (!recentArray.length || value === 0) {
     return <span>{value}</span>;
   }
-  let differ = (value - expectTree[prop.country]["買進"]).toFixed(4);
+  let obj = recentArray.find(x => x.key === prop.country);
+  let differ = (value - obj[defaultday]["賣出"]).toFixed(4);
   return differ > 0 ? (<CaretDown value={value} differ={Math.abs(differ)} />) : (<CaretUp value={value} differ={Math.abs(differ)} />);
 }
 
 class CusTable extends Component {
   render() {
-    const { loading, dataSource, forex, twd, status } = this.props;
+    const { loading, dataSource, forex, twd, status, defaultday } = this.props;
+    let recentArray = dataSource.map((v) => {
+      let obj = {
+        'key': v.country,
+        'day_10': v.recent[0],
+        'day_30': v.recent[1],
+        'day_60': v.recent[2],
+        'day_90': v.recent[3],
+        'day_120': v.recent[4],
+        'day_150': v.recent[5],
+        'day_180': v.recent[6],
+      };
+      return obj;
+    });
+
+    console.log(recentArray)
     return (
       <Table
-        scroll={{ x: 1100, y: 550 }}
+        scroll={{ x: 1100, y: 570 }}
         dataSource={dataSource}
         loading={loading}
         rowKey={x => x.country}
         pagination={false}>
-        <Column title="幣別" dataIndex="icon"
-          key="icon" fixed="left" align="center" width={110}
-          render={(value, prop) => (<img src={value} alt={prop.country} />)} />
+        <Column title="幣別" dataIndex="country"
+          key="country" fixed="left" align="center" width={100}
+          render={(value, prop) => (<img src={"/images/" + value + ".png"} alt={prop.country} />)} />
         <ColumnGroup title="現金匯率">
           <Column title="銀行買入" dataIndex="cashbuy"
             key="cashbuy" width={150} align="center"
-            render={(value, prop) => { return renderBuyColumn(value, prop) }} />
+            render={(value, prop) => { return renderBuyColumn(recentArray, value, prop, defaultday) }} />
           <Column title="銀行賣出" dataIndex="cashsell"
             key="cashsell" width={150} align="center"
-            render={(value, prop) => { return renderSellColumn(value, prop) }} />
+            render={(value, prop) => { return renderSellColumn(recentArray, value, prop, defaultday) }} />
         </ColumnGroup>
         <ColumnGroup title="即期匯率">
           <Column title="銀行買入" dataIndex="datebuy"
             key="datebuy" width={150} align="center"
-            render={(value, prop) => { return renderBuyColumn(value, prop) }} />
+            render={(value, prop) => { return renderBuyColumn(recentArray, value, prop, defaultday) }} />
           <Column title="銀行賣出" dataIndex="datesell"
             key="datesell" width={150} align="center"
-            render={(value, prop) => { return renderSellColumn(value, prop) }} />
+            render={(value, prop) => { return renderSellColumn(recentArray, value, prop, defaultday) }} />
         </ColumnGroup>
         <ColumnGroup title="匯率試算">
           <Column title="台幣換外幣" dataIndex="country"

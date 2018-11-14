@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import ReactJson from 'react-json-view'
-import { Tabs, Button, Switch, Icon, InputNumber } from 'antd';
+import { Tabs, Button, Select, Switch, Icon, InputNumber } from 'antd';
 import CusTable from "./components/CusTable";
 import { fetchCurrency, submitValue } from './actions/currencyAction'
 import './App.scss';
 
 const { TabPane } = Tabs;
+const { Option } = Select;
+
 
 let expectTree = {
   'USD': {
@@ -35,7 +37,8 @@ class App extends Component {
   state = {
     twd: 100,
     forex: 100,
-    status: true
+    status: true,
+    defaultday: 'day_10'
   }
 
   componentDidMount() {
@@ -44,6 +47,7 @@ class App extends Component {
 
   render() {
     const { loading, currencys: dataSource } = this.props;
+
     return (
       <div className="wrapper">
         <header className="header">
@@ -69,6 +73,19 @@ class App extends Component {
             <Button type="dashed" onClick={() => { this.props.dispatch(submitValue(this.state)) }}>計算</Button>
           </div>
           <div className="block">
+            <h4><Icon type="pound" style={{ color: "#d48806" }} />&nbsp;&nbsp;設定遠期天數差</h4>
+            <Select defaultValue={this.state.defaultday} style={{ width: "100%" }}
+              onChange={(value) => { this.setState({ defaultday: value }); }}>
+              <Option value="day_10">10天</Option>
+              <Option value="day_30">30天</Option>
+              <Option value="day_60">60天</Option>
+              <Option value="day_90">90天</Option>
+              <Option value="day_120">120天</Option>
+              <Option value="day_150">150天</Option>
+              <Option value="day_180">180天</Option>
+            </Select>
+          </div>
+          <div className="block" style={{ maxHeight: "250px" }}>
             <h4><Icon type="euro" theme="twoTone" twoToneColor="#d48806" />&nbsp;&nbsp;設定期望值</h4>
             <p>
               <small>Ex : 期望銀行美元兌台幣 1：29 買進</small>
@@ -83,13 +100,13 @@ class App extends Component {
         <section className="section">
           <Tabs defaultActiveKey="0">
             <TabPane tab={<span><Icon type="pay-circle-o" />即時匯率</span>} key="0">
-              <CusTable loading={loading} dataSource={dataSource} />
+              <CusTable loading={loading} dataSource={dataSource} defaultday={this.state.defaultday} />
             </TabPane>
             <TabPane tab={<span><Icon type="line-chart" />走勢分析</span>} key="1">
             </TabPane>
           </Tabs>
         </section>
-        <footer className="footer">
+        {/* <footer className="footer">
           <p>
             <small>
               Hosted on GitHub Pages
@@ -99,7 +116,7 @@ class App extends Component {
               — Base Design by <a href="https://ant.design/" target="_blank" rel="noopener noreferrer">Ant Design</a>
             </small>
           </p>
-        </footer>
+        </footer> */}
       </div >
     );
   }
