@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ReactJson from 'react-json-view'
 import { Tabs, Button, Select, Switch, Icon, InputNumber } from 'antd';
 import CusTable from "./components/CusTable";
+import CusChart from "./components/CusChart";
 import { fetchCurrency, submitValue } from './actions/currencyAction'
 import './App.scss';
 
@@ -100,9 +101,11 @@ class App extends Component {
         <section className="section">
           <Tabs defaultActiveKey="0">
             <TabPane tab={<span><Icon type="pay-circle-o" />即時匯率</span>} key="0">
+              <p style={{ textAlign: "right" }}><small>資料來源：臺灣銀行</small></p>
               <CusTable loading={loading} dataSource={dataSource} defaultday={this.state.defaultday} />
             </TabPane>
             <TabPane tab={<span><Icon type="line-chart" />走勢分析</span>} key="1">
+              <CusChart />
             </TabPane>
           </Tabs>
         </section>
