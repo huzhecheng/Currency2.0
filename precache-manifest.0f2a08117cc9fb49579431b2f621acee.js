@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/Currency2.0/static/css/1.999a763f.chunk.css"
   },
   {
-    "revision": "99b3cd9b78197f461ba0ad7aa05b297d",
+    "revision": "845cc1c122c482b65e5ff1b14ad73772",
     "url": "/Currency2.0/index.html"
   }
 ];
