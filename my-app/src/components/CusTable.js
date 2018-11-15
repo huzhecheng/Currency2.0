@@ -31,20 +31,18 @@ const CaretDown = ({ value, differ }) => {
 };
 
 const renderBuyColumn = (recentArray, value, prop, defaultday) => {
-  if (!recentArray.length || value === 0) {
-    return <span>{value}</span>;
-  }
+  if (!recentArray.length || value === 0) return <span>{value}</span>;
   let obj = recentArray.find(x => x.key === prop.country);
   let differ = (value - obj[defaultday]["買入"]).toFixed(4);
+  if (differ === '0.0000') return <span>{value}</span>;
   return differ > 0 ? (<CaretUp value={value} differ={Math.abs(differ)} />) : (<CaretDown value={value} differ={Math.abs(differ)} />);
 }
 
 const renderSellColumn = (recentArray, value, prop, defaultday) => {
-  if (!recentArray.length || value === 0) {
-    return <span>{value}</span>;
-  }
+  if (!recentArray.length || value === 0) return <span>{value}</span>
   let obj = recentArray.find(x => x.key === prop.country);
   let differ = (value - obj[defaultday]["賣出"]).toFixed(4);
+  if (differ === '0.0000') return <span>{value}</span>;
   return differ > 0 ? (<CaretDown value={value} differ={Math.abs(differ)} />) : (<CaretUp value={value} differ={Math.abs(differ)} />);
 }
 
@@ -65,7 +63,6 @@ class CusTable extends Component {
       return obj;
     });
 
-    console.log(recentArray)
     return (
       <Table
         scroll={{ x: 1100, y: 570 }}
