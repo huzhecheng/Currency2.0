@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 import MediaQuery from 'react-responsive';
-
-let center = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center'
-}
+import '../styles/CusChart.scss';
 
 const data = {
   labels: ['10天', '30天', '60天', '90天', '120天', '150天', '180天'],
@@ -30,7 +25,7 @@ const data = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [30.836, 30.789, 30.694, 30.6, 30.528, 30.422, 30.349]
+      data: []
     },
     {
       label: '賣出',
@@ -51,27 +46,53 @@ const data = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [30.94, 30.901, 30.807, 30.72, 30.652, 30.572, 30.49]
+      data: []
     }
   ]
 };
 
 class CusChart extends Component {
   render() {
+    const { dataSource } = this.props;
+
+    let icons = [];
+    let chartdata = dataSource.map((v) => {
+      icons.push(v.icon);
+      let buy = [];
+      let sell = [];
+      v.recent.forEach((val) => {
+        buy.push(val.買入);
+        sell.push(val.賣出);
+      });
+      let obj = {
+        key: v.country,
+        buy: buy,
+        sell: sell
+      }
+      return obj;
+    });
+
     return (
-      <div style={center}>
-        <MediaQuery query="(min-width: 768px)">
-          <Line data={data} width={720}
-            height={360}
-            options={{
-              maintainAspectRatio: false,
-              responsive: false
-            }} />
-        </MediaQuery>
-        <MediaQuery query="(max-width: 767px)">
-          <Line data={data} width={720}
-            height={360} />
-        </MediaQuery>
+      <div>
+        <div className="icon-box">
+          {icons.map((v, index) => {
+            return <img style={{ padding: '0 10px' }} src={v} alt={index} key={index} />
+          })}
+        </div>
+        <div className="chart-box">
+          <MediaQuery query="(min-width: 768px)">
+            <Line data={data} width={720}
+              height={360}
+              options={{
+                maintainAspectRatio: false,
+                responsive: false
+              }} />
+          </MediaQuery>
+          <MediaQuery query="(max-width: 767px)">
+            <Line data={data} width={720}
+              height={360} />
+          </MediaQuery>
+        </div>
       </div>
     );
   }

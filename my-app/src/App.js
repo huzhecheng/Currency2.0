@@ -105,7 +105,7 @@ class App extends Component {
               <CusTable loading={loading} dataSource={dataSource} defaultday={this.state.defaultday} />
             </TabPane>
             <TabPane tab={<span><Icon type="line-chart" />走勢分析</span>} key="1">
-              <CusChart />
+              <CusChart dataSource={dataSource} />
             </TabPane>
           </Tabs>
         </section>
